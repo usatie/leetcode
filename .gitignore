@@ -1,0 +1,11 @@
+## macOS
+*.DS_Store
+
+## C++
+*.o
+*.out
+
+## Vim
+*.swp
+*.swo
+*.swn
