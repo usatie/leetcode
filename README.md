@@ -13,7 +13,7 @@ Next, delete all the code and start over. This time, measure the time and write 
 ## [Arai60](https://1kohei1.com/leetcode/) Check List
 ---
 
-- [ ] 1. Two Sum
+- [x] 1. Two Sum
 - [ ] 2. Add Two Numbers
 - [ ] 3. Longest Substring Without Repeating Characters
 - [ ] 4. Zigzag Conversion
