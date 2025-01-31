@@ -1,15 +1,14 @@
-#include "step3.cpp"
-#include <algorithm>
+#include "step3.hpp"
 #include <iostream>
 #include <vector>
 
 #define T(...)                                                                 \
-  ({                                                                           \
+  [&] {                                                                        \
     std::cout << #__VA_ARGS__ " -> ";                                          \
     std::vector<int> nums{__VA_ARGS__};                                        \
     solution.nextPermutation(nums);                                            \
     print_arr(nums);                                                           \
-  })
+  }()
 void print_arr(std::vector<int> &nums) {
   std::cout << "[";
   for (auto it = nums.begin(), end = nums.end(); it != end; ++it) {

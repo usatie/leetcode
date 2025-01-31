@@ -5,5 +5,5 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++11
 
 all: $(NAME)
 
-$(NAME): $(SRC) step3.cpp
+$(NAME): $(SRC) step3.hpp
 	$(CXX) -o $(NAME) $(SRC) $(CXXFLAGS)

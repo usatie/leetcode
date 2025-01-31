@@ -4,6 +4,11 @@
   時間計算量: O(N)
   空間計算量: O(1)
 */
+#ifndef STEP3_H
+#define STEP3_H
+#include <algorithm>
+#include <iostream>
+#include <vector>
 class Solution {
 public:
   void nextPermutation(std::vector<int> &nums) {
@@ -85,3 +90,4 @@ template <class BidirIt> void reverse(BidirIt first, BidirIt last) {
 }
 
 } // namespace playground
+#endif
