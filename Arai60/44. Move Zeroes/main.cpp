@@ -1,5 +1,4 @@
-#include "step3.cpp"
-#include <algorithm>
+#include "step3.hpp"
 #include <cassert>
 #include <iostream>
 #include <vector>

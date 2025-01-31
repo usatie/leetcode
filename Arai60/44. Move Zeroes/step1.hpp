@@ -8,6 +8,12 @@
   正解してから気づいたこと
    - N/A
 */
+#ifndef STEP1_HPP
+#define STEP1_HPP
+#include <algorithm>
+#include <vector>
+using std::iter_swap;
+using std::vector;
 class Solution {
 public:
   void moveZeroes(vector<int> &nums) {
@@ -20,3 +26,4 @@ public:
     }
   }
 };
+#endif

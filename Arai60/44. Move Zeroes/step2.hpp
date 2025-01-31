@@ -18,6 +18,14 @@
  filterしたい値が1つだけの場合に有効だが、複数の値をたとえば移動したい場合とかは順番もretainできるしswapがよいかな
  */
 
+#ifndef STEP2_HPP
+#define STEP2_HPP
+
+#include <algorithm>
+#include <vector>
+using std::iter_swap;
+using std::vector;
+
 class Solution {
 public:
   // 1. swapを使う
@@ -60,3 +68,4 @@ public:
     std::fill(next_pos, nums.end(), 0);
   }
 };
+#endif
