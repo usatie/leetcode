@@ -12,11 +12,9 @@
 #define STEP1_HPP
 #include <algorithm>
 #include <vector>
-using std::iter_swap;
-using std::vector;
 class Solution {
 public:
-  void moveZeroes(vector<int> &nums) {
+  void moveZeroes(std::vector<int> &nums) {
     auto next_it = nums.begin();
     for (auto it = nums.begin(); it < nums.end(); ++it) {
       if (*it != 0) {

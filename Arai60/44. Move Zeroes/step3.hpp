@@ -3,8 +3,6 @@
 
 #include <algorithm>
 #include <vector>
-using std::iter_swap;
-using std::vector;
 
 /*
   3問連続で正解するのにかかった時間 2:57

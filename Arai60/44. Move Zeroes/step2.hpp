@@ -23,13 +23,11 @@
 
 #include <algorithm>
 #include <vector>
-using std::iter_swap;
-using std::vector;
 
 class Solution {
 public:
   // 1. swapを使う
-  void moveZeroes1(vector<int> &nums) {
+  void moveZeroes1(std::vector<int> &nums) {
     auto next_pos = nums.begin();
     for (auto &num : nums) {
       if (num != 0) {
