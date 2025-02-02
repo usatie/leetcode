@@ -65,5 +65,10 @@ public:
         *next_pos++ = num;
     std::fill(next_pos, nums.end(), 0);
   }
+  // 3. Fill-Remove idiom (like Erase-Remove idiom)
+  // https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom
+  void moveZeroes3(std::vector<int> &nums) {
+    std::fill(std::remove(nums.begin(), nums.end(), 0), nums.end(), 0);
+  }
 };
 #endif
