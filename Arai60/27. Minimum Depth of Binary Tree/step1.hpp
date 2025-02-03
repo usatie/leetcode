@@ -1,3 +1,15 @@
+/*
+  何がわからなかったか
+   - N/A
+  何を考えて解いていたか
+   1. min depthを求めるので、BFSを使いたい
+  正解してから気づいたこと
+   - 最後のunreachableなcodeについて、どうしたらいいか
+     std::unreachableはC++23から使えるらしいが、新しすぎるか
+     https://en.cppreference.com/w/cpp/utility/unreachable
+     __builtin_unreachable()を使うのが良いかもしれないが、それもどうか
+   - depthはqueueに入れてしまった方が見通しが良いかも
+*/
 #ifndef STEP1_HPP
 #define STEP1_HPP
 /**
