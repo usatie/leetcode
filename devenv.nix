@@ -6,11 +6,4 @@
   languages.cplusplus = {
     enable = true;
   };
-
-  # https://devenv.sh/pre-commit-hooks/
-  pre-commit.hooks = {
-    # format C++ code
-    clang-format.enable = true;
-  };
-
 }
