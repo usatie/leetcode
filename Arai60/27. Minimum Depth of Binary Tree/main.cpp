@@ -1,51 +1,32 @@
-#include "step3.hpp"
 #include <iostream>
 #include <queue>
 
-#define null 9999999
+#include "step3.hpp"
 
-TreeNode *buildTree(std::initializer_list<int> values) {
-  if (values.size() == 0) {
-    return nullptr;
-  }
-  TreeNode *root = new TreeNode(*values.begin());
-  std::queue<TreeNode *> nodes;
-  nodes.push(root);
-  for (size_t i = 1; i < values.size(); ++i) {
-    auto node = nodes.front();
-    nodes.pop();
-    int val1 = *(values.begin() + i);
-    int val2 = *(values.begin() + ++i);
-    if (val1 != null) {
-      node->left = new TreeNode(val1);
-      nodes.push(node->left);
-    }
-    if (val2 != null) {
-      node->right = new TreeNode(val2);
-      nodes.push(node->right);
-    }
-  }
-  return root;
-}
-
-void printTestCase(std::initializer_list<int> values) {
+void printTestCase(TreeNode *root) {
   std::cout << "Test case: [";
-  for (auto it = values.begin(); it != values.end(); ++it) {
-    if (*it == null) {
+  std::queue<TreeNode *> nodesToVisit;
+  if (root)
+    nodesToVisit.push(root);
+  while (!nodesToVisit.empty()) {
+    auto node = nodesToVisit.front();
+    nodesToVisit.pop();
+    if (node != root) {
+      std::cout << ",";
+    }
+    if (node == nullptr) {
       std::cout << "null";
     } else {
-      std::cout << *it;
-    }
-    if (it != values.end() - 1) {
-      std::cout << ",";
+      std::cout << node->val;
+      nodesToVisit.push(node->left);
+      nodesToVisit.push(node->right);
     }
   }
   std::cout << "]" << std::endl;
 }
 
-void test(std::initializer_list<int> values, int expected) {
-  TreeNode *root = buildTree(values);
-  printTestCase(values);
+void test(TreeNode *root, int expected) {
+  printTestCase(root);
   Solution solution;
   int result = solution.minDepth(root);
   if (result == expected) {
@@ -56,8 +37,18 @@ void test(std::initializer_list<int> values, int expected) {
 }
 
 int main() {
-  test({}, 0);
-  test({1}, 1);
-  test({3, 9, 20, null, null, 15, 7}, 2);
-  test({2, null, 3, null, 4, null, 5, null, 6}, 5);
+  test(nullptr, 0);
+  test(new TreeNode(1), 1);
+  test(new TreeNode(3,
+                    new TreeNode(9),
+                    new TreeNode(20,
+                                 new TreeNode(15),
+                                 new TreeNode(7))),
+       2);
+  test(new TreeNode(2, nullptr,
+                    new TreeNode(3, nullptr,
+                                 new TreeNode(4, nullptr,
+                                              new TreeNode(5, nullptr,
+                                                           new TreeNode(6))))),
+       5);
 }
