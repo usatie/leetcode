@@ -44,14 +44,14 @@ public:
   // 3. pushの代わりにemplaceを使ってみた
   int minDepth(TreeNode* root) {
     if (root == nullptr) return 0;
-    std::queue<std::tuple<TreeNode *, int>> visitQueue;
-    visitQueue.emplace(root, 1);
-    while (!visitQueue.empty()) {
-      auto [node, depth] = visitQueue.front();
-      visitQueue.pop();
+    std::queue<std::tuple<TreeNode *, int>> nodesToVisit;
+    nodesToVisit.emplace(root, 1);
+    while (!nodesToVisit.empty()) {
+      auto [node, depth] = nodesToVisit.front();
+      nodesToVisit.pop();
       if (node->left == nullptr && node->right == nullptr) { return depth; }
-      if (node->left) { visitQueue.emplace(node->left, depth + 1); }
-      if (node->right) { visitQueue.emplace(node->right, depth + 1); }
+      if (node->left) { nodesToVisit.emplace(node->left, depth + 1); }
+      if (node->right) { nodesToVisit.emplace(node->right, depth + 1); }
     }
     __builtin_unreachable();
   }
@@ -59,20 +59,21 @@ public:
   // root == nullptrを特別扱いせずにdummyを使ってみる
   int minDepth2(TreeNode* root) {
     TreeNode dummy(0, root, nullptr);
-    std::queue<std::tuple<TreeNode *, int>> visitQueue;
-    visitQueue.emplace(&dummy, 0);
-    while (!visitQueue.empty()) {
-      auto [node, depth] = visitQueue.front();
-      visitQueue.pop();
+    std::queue<std::tuple<TreeNode *, int>> nodesToVisit;
+    nodesToVisit.emplace(&dummy, 0);
+    while (!nodesToVisit.empty()) {
+      auto [node, depth] = nodesToVisit.front();
+      nodesToVisit.pop();
       if (node->left == nullptr && node->right == nullptr) { return depth; }
-      if (node->left) { visitQueue.emplace(node->left, depth + 1); }
-      if (node->right) { visitQueue.emplace(node->right, depth + 1); }
+      if (node->left) { nodesToVisit.emplace(node->left, depth + 1); }
+      if (node->right) { nodesToVisit.emplace(node->right, depth + 1); }
     }
     __builtin_unreachable();
   }
 
   // DFSでもやってみる
   // どちらにせよO(N)だが平衡に近い木ではだいぶ不利なはず
+  // (O(N) vs O(logN)になる)
   int minDepth3(TreeNode* root) {
     auto dfs = [&](auto &&self, TreeNode *node) -> int {
       if (node == nullptr) { return 0; }
