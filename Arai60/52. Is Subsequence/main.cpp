@@ -1,11 +1,11 @@
 #include <iostream>
 #include <string>
 
-#include "step1.hpp"
+#include "step2.hpp"
 
 #define test(subsequence, text, expected)                                      \
   [] {                                                                         \
-    bool actual = Solution().isSubsequence(subsequence, text);                 \
+    bool actual = Solution3().isSubsequence(subsequence, text);                \
     std::cout << "Test: " << #subsequence << " in " << #text << "\" : ";       \
     if (actual == expected) {                                                  \
       std::cout << "OK" << std::endl;                                          \
