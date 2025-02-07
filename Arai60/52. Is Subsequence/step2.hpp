@@ -24,6 +24,7 @@
 #ifndef STEP2_HPP
 #define STEP2_HPP
 
+#include <functional>
 #include <map>
 #include <string>
 #include <vector>
@@ -146,10 +147,10 @@ class Solution5 {
 public:
   // ラムダでの再帰関数がうまく書けなくて、std::functionを使うことになった
   // 書ける場合と書けない場合の違いは何だろうか？
-  // 引数で自身を渡してあげれば書けるというのがC++17の機能だった模様
-  // https://github.com/usatie/leetcode/pull/4/files#diff-43e2749181b31eb4f4bf1fd95048e0d7f2fb65e9b44c84eefaf3905a22349a90R77
+  // https://en.cppreference.com/w/cpp/language/lambda
   bool isSubsequence(const std::string &subsequence, const std::string &text) {
-    auto is_subseq = [&](size_t i, size_t j) -> bool {
+    std::function<bool(size_t, size_t)> is_subseq = [&](size_t i,
+                                                        size_t j) -> bool {
       if (i == 0) {
         return true;
       }
@@ -166,4 +167,54 @@ public:
   }
 };
 
+// C++17 way to write recursive lambda
+// Recursive (Lambda), only works with C++17
+class Solution6 {
+public:
+  // 引数で自身を渡してあげれば書けるというのがC++17の機能だった模様
+  // https://github.com/usatie/leetcode/pull/4/files#diff-43e2749181b31eb4f4bf1fd95048e0d7f2fb65e9b44c84eefaf3905a22349a90R77
+  //
+  // `auto &&self`というのはどこからか引っ張ってきたコードだったけど、
+  // `auto self`でも`auto &&self`でも動いた. それぞれの挙動の違いが違いが
+  // わかっていない. `&`にしないと関数オブジェクト?のコピーが発生するのはわかる
+  // 気がするが`&&`は普段使ったことがない. また、cppreferenceのサンプルコードも
+  // `auto`だったので、referenceにする必要があるのかもわからない
+  bool isSubsequence(const std::string &subsequence, const std::string &text) {
+    auto is_subseq = [&](auto self, size_t i, size_t j) -> bool {
+      if (i == 0) {
+        return true;
+      }
+      if (j == 0) {
+        return false;
+      }
+      if (subsequence[i] == text[j]) {
+        return self(self, i - 1, j - 1);
+      } else {
+        return self(self, i, j - 1);
+      }
+    };
+    return is_subseq(is_subseq, subsequence.size(), text.size());
+  }
+};
+
+// C++23 way to write recursive lambda
+class Solution7 {
+public:
+  bool isSubsequence(const std::string &subsequence, const std::string &text) {
+    auto is_subseq = [&](this auto self, size_t i, size_t j) -> bool {
+      if (i == 0) {
+        return true;
+      }
+      if (j == 0) {
+        return false;
+      }
+      if (subsequence[i] == text[j]) {
+        return self(i - 1, j - 1);
+      } else {
+        return self(i, j - 1);
+      }
+    };
+    return is_subseq(subsequence.size(), text.size());
+  }
+};
 #endif // STEP2_HPP
