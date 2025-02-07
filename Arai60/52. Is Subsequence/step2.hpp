@@ -2,7 +2,13 @@
  講師陣はどのようなコメントを残すだろうか？
   -
  他の人のコードを読んで考えたこと
-  -
+  - https://github.com/philip82148/leetcode-arai60/pull/7
+    関数プロトタイプとかは与えられたものと考えるのではなく、より好ましいものに
+    変えちゃった方がいい
+  - https://github.com/Yoshiki-Iwasa/Arai60/pull/62
+    Edit distanceの問題として捉えることもできるのか.
+    https://en.wikipedia.org/wiki/Levenshtein_distance
+    DPでも解ける, なるほどやってみよう
  改善する時にかんがえたこと
   - 同じtextに対してqueryが来ないなら初期化したcharacterPositionsをメンバ変数で
     持ってもいいし、Constructorで初期化してもいい。
@@ -12,6 +18,8 @@
     ただし、textが大きい場合はmapのkeyとしてtextも保存する羽目になるので、
     メモリを食ってしまうかもしれない。衝突を許容して少ない数のtextだったら
     key自体もhashにしてしまってもいいかもしれない?
+  - `auto positions = characterPositions[c];`と元々はしていたけれど
+    referenceにしておかないと意図せぬcopyが発生してしまう
 */
 #ifndef STEP2_HPP
 #define STEP2_HPP
@@ -35,7 +43,7 @@ public:
     }
     size_t searchPos = 0;
     for (char c : subsequence) {
-      auto positions = characterPositions[c];
+      auto &positions = characterPositions[c];
       auto found =
           std::lower_bound(positions.begin(), positions.end(), searchPos);
       if (found == positions.end()) {
@@ -62,7 +70,7 @@ public:
     }
     size_t searchPos = 0;
     for (char c : subsequence) {
-      auto positions = characterPositions[c];
+      auto &positions = characterPositions[c];
       auto found =
           std::lower_bound(positions.begin(), positions.end(), searchPos);
       if (found == positions.end()) {
@@ -96,7 +104,7 @@ public:
     auto &characterPositions = initialized_data[text];
     size_t searchPos = 0;
     for (char c : subsequence) {
-      auto positions = characterPositions[c];
+      auto &positions = characterPositions[c];
       auto found =
           std::lower_bound(positions.begin(), positions.end(), searchPos);
       if (found == positions.end()) {
@@ -105,6 +113,56 @@ public:
       searchPos = *found;
     }
     return true;
+  }
+};
+
+// Dynamic Programming
+class Solution4 {
+public:
+  bool isSubsequence(const std::string &subsequence, const std::string &text) {
+    size_t m = subsequence.size();
+    size_t n = text.size();
+    // is_subseq[i][j] : subsequence[0..i) is a subsequence of text[0..j)
+    std::vector<std::vector<bool>> is_subseq(m + 1,
+                                             std::vector<bool>(n + 1, false));
+    for (size_t j = 0; j <= n; ++j) {
+      is_subseq[0][j] = true;
+    }
+    for (size_t i = 1; i <= m; ++i) {
+      for (size_t j = 1; j <= n; ++j) {
+        if (subsequence[i] == text[j]) {
+          is_subseq[i][j] = is_subseq[i - 1][j - 1];
+        } else {
+          is_subseq[i][j] = is_subseq[i][j - 1];
+        }
+      }
+    }
+    return is_subseq[m][n];
+  }
+};
+
+// Recursive
+class Solution5 {
+public:
+  // ラムダでの再帰関数がうまく書けなくて、std::functionを使うことになった
+  // 書ける場合と書けない場合の違いは何だろうか？
+  // https://github.com/usatie/leetcode/pull/4/files#diff-43e2749181b31eb4f4bf1fd95048e0d7f2fb65e9b44c84eefaf3905a22349a90R77
+  bool isSubsequence(const std::string &subsequence, const std::string &text) {
+    std::function<bool(size_t, size_t)> is_subseq;
+    is_subseq = [&](size_t i, size_t j) -> bool {
+      if (i == 0) {
+        return true;
+      }
+      if (j == 0) {
+        return false;
+      }
+      if (subsequence[i] == text[j]) {
+        return is_subseq(i - 1, j - 1);
+      } else {
+        return is_subseq(i, j - 1);
+      }
+    };
+    return is_subseq(subsequence.size(), text.size());
   }
 };
 
