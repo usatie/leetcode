@@ -5,7 +5,7 @@
 
 #define test(subsequence, text, expected)                                      \
   [] {                                                                         \
-    bool actual = Solution3().isSubsequence(subsequence, text);                \
+    bool actual = Solution5().isSubsequence(subsequence, text);                \
     std::cout << "Test: " << #subsequence << " in " << #text << "\" : ";       \
     if (actual == expected) {                                                  \
       std::cout << "OK" << std::endl;                                          \
