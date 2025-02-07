@@ -146,10 +146,10 @@ class Solution5 {
 public:
   // ラムダでの再帰関数がうまく書けなくて、std::functionを使うことになった
   // 書ける場合と書けない場合の違いは何だろうか？
+  // 引数で自身を渡してあげれば書けるというのがC++17の機能だった模様
   // https://github.com/usatie/leetcode/pull/4/files#diff-43e2749181b31eb4f4bf1fd95048e0d7f2fb65e9b44c84eefaf3905a22349a90R77
   bool isSubsequence(const std::string &subsequence, const std::string &text) {
-    std::function<bool(size_t, size_t)> is_subseq;
-    is_subseq = [&](size_t i, size_t j) -> bool {
+    auto is_subseq = [&](size_t i, size_t j) -> bool {
       if (i == 0) {
         return true;
       }
