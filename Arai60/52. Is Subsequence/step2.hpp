@@ -147,7 +147,6 @@ class Solution5 {
 public:
   // ラムダでの再帰関数がうまく書けなくて、std::functionを使うことになった
   // 書ける場合と書けない場合の違いは何だろうか？
-  // https://en.cppreference.com/w/cpp/language/lambda
   bool isSubsequence(const std::string &subsequence, const std::string &text) {
     std::function<bool(size_t, size_t)> is_subseq = [&](size_t i,
                                                         size_t j) -> bool {
@@ -169,9 +168,13 @@ public:
 
 // C++17 way to write recursive lambda
 // Recursive (Lambda), only works with C++17
+// If auto is used as a type of a parameter or an explicit template parameter
+// list is provided(since C++20), the lambda is a generic lambda. (since C++14)
+// https://en.cppreference.com/w/cpp/language/lambda
 class Solution6 {
 public:
   // 引数で自身を渡してあげれば書けるというのがC++17の機能だった模様
+  // というか、引数でautoを使える(=Generic Lambda)のがC++17から
   // https://github.com/usatie/leetcode/pull/4/files#diff-43e2749181b31eb4f4bf1fd95048e0d7f2fb65e9b44c84eefaf3905a22349a90R77
   //
   // `auto &&self`というのはどこからか引っ張ってきたコードだったけど、
@@ -179,8 +182,30 @@ public:
   // わかっていない. `&`にしないと関数オブジェクト?のコピーが発生するのはわかる
   // 気がするが`&&`は普段使ったことがない. また、cppreferenceのサンプルコードも
   // `auto`だったので、referenceにする必要があるのかもわからない
+  // https://stackoverflow.com/questions/29859796/c-auto-vs-auto
+  //
+  // ChatGPT-o3-mini-highに質問してみて、だんだんと違いがわかってきた。
+  // 色々と理解が曖昧なものがあったが、さらにドキュメントを読む必要がありそう
+  // lvalue, rvalue, move constructor, move semantics, perfect forwarding,
+  // type erasure, std::function
+  // https://chatgpt.com/share/67a67173-839c-8000-913d-ca67b6aa6859
+  //
+  // たくさんあるのでひとまず積読ですが、徐々に読んでみます。
+  // https://chatgpt.com/share/67a67173-839c-8000-913d-ca67b6aa6859
+  // https://en.cppreference.com/w/cpp/language/auto
+  // https://en.cppreference.com/w/cpp/language/reference
+  // https://en.cppreference.com/w/cpp/language/value_category
+  // https://en.cppreference.com/w/cpp/utility/move
+  // https://en.cppreference.com/w/cpp/language/move_constructor
+  // https://en.cppreference.com/w/cpp/language/move_assignment
+  // https://en.cppreference.com/w/cpp/utility/forward
+  // https://en.cppreference.com/w/cpp/utility/functional/function
+  //
+  // Type Erasure
+  // https://cplusplus.com/articles/oz18T05o/
+  // https://davekilian.com/cpp-type-erasure.html
   bool isSubsequence(const std::string &subsequence, const std::string &text) {
-    auto is_subseq = [&](auto self, size_t i, size_t j) -> bool {
+    auto is_subseq = [&](auto &&self, size_t i, size_t j) -> bool {
       if (i == 0) {
         return true;
       }
@@ -198,6 +223,7 @@ public:
 };
 
 // C++23 way to write recursive lambda
+// https://en.cppreference.com/w/cpp/language/member_functions#Explicit_object_member_functions
 class Solution7 {
 public:
   bool isSubsequence(const std::string &subsequence, const std::string &text) {

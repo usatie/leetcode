@@ -1,7 +1,7 @@
 NAME = a.out
 SRC = main.cpp
 CXX = g++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++11
+CXXFLAGS = -Wall -Wextra -Werror -std=c++23
 
 all: $(NAME)
 
