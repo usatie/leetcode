@@ -131,7 +131,7 @@ public:
     }
     for (size_t i = 1; i <= m; ++i) {
       for (size_t j = 1; j <= n; ++j) {
-        if (subsequence[i] == text[j]) {
+        if (subsequence[i - 1] == text[j - 1]) {
           is_subseq[i][j] = is_subseq[i - 1][j - 1];
         } else {
           is_subseq[i][j] = is_subseq[i][j - 1];
@@ -156,7 +156,7 @@ public:
       if (j == 0) {
         return false;
       }
-      if (subsequence[i] == text[j]) {
+      if (subsequence[i - 1] == text[j - 1]) {
         return is_subseq(i - 1, j - 1);
       } else {
         return is_subseq(i, j - 1);
@@ -212,7 +212,7 @@ public:
       if (j == 0) {
         return false;
       }
-      if (subsequence[i] == text[j]) {
+      if (subsequence[i - 1] == text[j - 1]) {
         return self(self, i - 1, j - 1);
       } else {
         return self(self, i, j - 1);
@@ -234,7 +234,7 @@ public:
       if (j == 0) {
         return false;
       }
-      if (subsequence[i] == text[j]) {
+      if (subsequence[i - 1] == text[j - 1]) {
         return self(i - 1, j - 1);
       } else {
         return self(i, j - 1);
