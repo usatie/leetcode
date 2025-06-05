@@ -32,7 +32,7 @@ public:
       if (found == positions.end()) {
         return false;
       }
-      search_pos = *found;
+      search_pos = *found + 1;
     }
     return true;
   }

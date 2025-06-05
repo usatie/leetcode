@@ -26,6 +26,7 @@
 
 #include <functional>
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -37,20 +38,21 @@ class Solution1 {
    */
 public:
   bool isSubsequence(const std::string &subsequence, const std::string &text) {
-    std::map<char, std::vector<size_t>> characterPositions;
+    std::map<char, std::set<size_t>> characterPositions;
     for (size_t i = 0; i < text.size(); ++i) {
       char c = text[i];
-      characterPositions[c].push_back(i);
+      // characterPositions[c].emplace(i);
+      auto &positions = characterPositions[c];
+      positions.insert(positions.end(), i);
     }
     size_t searchPos = 0;
     for (char c : subsequence) {
       auto &positions = characterPositions[c];
-      auto found =
-          std::lower_bound(positions.begin(), positions.end(), searchPos);
+      auto found = positions.lower_bound(searchPos);
       if (found == positions.end()) {
         return false;
       }
-      searchPos = *found;
+      searchPos = *found + 1;
     }
     return true;
   }
@@ -77,7 +79,7 @@ public:
       if (found == positions.end()) {
         return false;
       }
-      searchPos = *found;
+      searchPos = *found + 1;
     }
     return true;
   }
@@ -111,7 +113,7 @@ public:
       if (found == positions.end()) {
         return false;
       }
-      searchPos = *found;
+      searchPos = *found + 1;
     }
     return true;
   }
@@ -218,7 +220,7 @@ public:
         return self(self, i, j - 1);
       }
     };
-    return is_subseq(is_subseq, subsequence.size(), text.size());
+    return is_subseq(std::move(is_subseq), subsequence.size(), text.size());
   }
 };
 
